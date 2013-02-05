@@ -18,51 +18,53 @@ For a clean start I recommend you delete (or move) your current .cabal and .ghc 
 
 You have now installed LazyVault on your system, make sure you add $HOME/.cabal/bin to your $PATH in order to access the executable.
 
+# Usage
+
 Once you're done, store your currently used cabal / ghc directories with the following command
 
-  LazyVault store LazyVault
+    #LazyVault store LazyVault
 
 This will store your current cabal environment as a sandbox and name it LazyVault.
 
 Add this piece of code to your .bashrc / .bashprofile / .zshrc to include all the bin directories to your $PATH
 
-  source $HOME/.lazyVault/binPaths
+    source $HOME/.lazyVault/binPaths
 
 You can now access the LazyVault executable even though it's stored as a sandbox.
 
-To list your sanboxes issue this command:
+### To list your sanboxes issue this command:
 
-  # LazyVault list
-  Available sandboxes:
-  none **
-  LazyVault
+    # LazyVault list
+    Available sandboxes:
+    none **
+    LazyVault
 
 Here you see that no sandbox is selected, but LazyVault is available. We can leave the LazyVault sandbox as it is, since we only need to access the binary. Let's install the `random` package in a new sandbox.
 
-Create a sandbox:
+### Create a sandbox:
 
-  LazyVault create Random
+    LazyVault create Random
 
 Check your sandbox list again:
 
-  # LazyVault list
-  Available sandboxes:
-  none **
-  Random
-  LazyVault
+    # LazyVault list
+    Available sandboxes:
+    none **
+    Random
+    LazyVault
 
 Random has been added, but none is still selected. Let's set Random as our current cabal environment:
 
-  # LazyVault set Random
+    # LazyVault set Random
 
 Check the list again:
 
-  # LazyVault list
-  Random **
-  LazyVault
+    # LazyVault list
+    Random **
+    LazyVault
 
 As we can see, Random is now selected. We can now proceed in installed the random package.
 
-  # cabal update ; cabal install random
+    # cabal update ; cabal install random
 
 `random` has now been installed in the `Random` sandbox, and is accessible globally if Random is set.
