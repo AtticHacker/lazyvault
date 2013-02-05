@@ -14,9 +14,11 @@ LazyVault lets you create new global cabal sandboxes on your system. Instead of 
 
 For a clean start I recommend you delete (or move) your current .cabal and .ghc directories and install LazyVault in a fesh .cabal dir.
 
-    # cabal update ; cabal install LazyVault
+    # git clone git@github.com:AtticHacker/LazyVault
+    # cd LazyVault
+    # cabal install
 
-You have now installed LazyVault on your system, make sure you add $HOME/.cabal/bin to your $PATH in order to access the executable.
+You have now installed LazyVault in your current cabal directory, make sure you add $HOME/.cabal/bin to your $PATH in order to access the executable.
 
 # Usage
 
