@@ -21,3 +21,7 @@ executable LazyVault
                , filepath  == 1.3.*
                , directory == 1.1.*
                , unix      == 2.5.*
+
+source-repository head
+  type: git
+  location: https://github.com/AtticHacker/LazyVault                    
