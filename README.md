@@ -65,7 +65,7 @@ Check the list again:
     Random **
     LazyVault
 
-As we can see, Random is now selected. We can now proceed in installed the random package.
+As we can see, Random is now selected. We can now proceed in installing the random package.
 
     # cabal update ; cabal install random
 
