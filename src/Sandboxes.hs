@@ -50,7 +50,7 @@ homeCabal        = getAppUserDataDirectory   "cabal"
 xs <:>  a = foldl (\acc x -> filter x acc) a xs
 
 binPaths :: String
-binPaths = "paths=`find /home/kevin/.lazyVault/* -type d | grep 'cabal/bin' | sed ':a;N;$!ba;s/\\n/ /g'`\nexport PATH=$PATH:${paths// /:}"
+binPaths = "paths=`find $HOME/.lazyVault/* -type d | grep 'cabal/bin' | sed ':a;N;$!ba;s/\\n/ /g'`\nexport PATH=$PATH:${paths// /:}"
 
 createEnv :: IO ()
 createEnv = do
