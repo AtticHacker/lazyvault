@@ -1,12 +1,12 @@
 {-
 Copyright 2013 Kevin van Rooijen
-    
+
 This file is part of LazyVault.
 
-LazyVault is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, 
+LazyVault is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation,
 either version 3 of the License, or (at your option) any later version.
 
-LazyVault is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; 
+LazyVault is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
 without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License along with LazyVault. If not, see http://www.gnu.org/licenses/.
@@ -68,12 +68,12 @@ createSandbox name = do
   createEnv
   lazyD      <- lazyDirSandboxes
   let projectDir = lazyD </> name
-  let ghc   = projectDir </> "ghc"
-      cabal = projectDir </> "cabal"
+      ghc        = projectDir </> "ghc"
+      cabal      = projectDir </> "cabal"
   exist <- (doesDirectoryExist projectDir)
   if exist == True
     then error "Project already Exists"
-    else  mapM_ createDirectory $ [projectDir,ghc,cabal]
+    else mapM_ createDirectory $ [projectDir,ghc,cabal]
 
 sandboxExist :: String -> IO Bool
 sandboxExist name = do
@@ -86,7 +86,7 @@ writeCurrent sb = lazyDir >>= \a -> writeFile (a </> ".current") sb
 
 removeSandbox :: IO String -> IO ()
 removeSandbox sb = do
-  dir <- sb
+  dir   <- sb
   exist <- lazyDirSandboxes >>= \l -> doesDirectoryExist $ l </> dir
   if exist == True
     then do
@@ -111,23 +111,26 @@ removeSandbox sb = do
 
 setSandbox :: String -> IO ()
 setSandbox name = do
-  sandboxExist name >>= \bool ->
-    if bool == True
-      then do
-        dirList <- mapM checkDir [homeGhc, homeCabal]
-        let dirTuples = zip dirList [homeGhc, homeCabal]
-        for_ dirTuples $ \dir ->
-          case (fst dir) of
-            DSym   -> snd dir >>= removeFile 
-            DDir   -> error "Move your .ghc and/or .cabal directory. Or use backup [Name]" 
-            DEmpty -> return ()
-        [ghc, cabal] <- getSandboxDirs name
-        [newGhc, newCabal] <- sequence [homeGhc, homeCabal]
-        createSymbolicLink ghc newGhc
-        createSymbolicLink cabal newCabal
-        writeCurrent name
-        return ()
-      else print "Sanbox Doesn't exist"
+  exists <- sandboxExist name
+  if exists == True
+    then do
+      dirList <- mapM checkDir [homeGhc, homeCabal]
+      let dirTuples = zip dirList [homeGhc, homeCabal]
+
+      for_ dirTuples $ \dir ->
+        case (fst dir) of
+          DSym   -> snd dir >>= removeFile
+          DDir   -> error "Move your .ghc and/or .cabal directory. Or use backup [Name]"
+          DEmpty -> return ()
+
+      [ghc, cabal]       <- getSandboxDirs name
+      [newGhc, newCabal] <- sequence [homeGhc, homeCabal]
+
+      createSymbolicLink ghc newGhc
+      createSymbolicLink cabal newCabal
+      writeCurrent name
+      return ()
+    else print "Sanbox Doesn't exist"
 
 listSandboxes :: IO ()
 listSandboxes = do
@@ -151,13 +154,13 @@ backupSystemDirs name = do
     case fst a of
       DEmpty -> return ()
       DSym   -> homeP (snd a) >>= removeFile
-      DDir   -> homeP (snd a) >>= \path -> 
+      DDir   -> homeP (snd a) >>= \path ->
         renameDirectory path $ lazy </> name </> (snd a)
   where homeP a = getAppUserDataDirectory a
 
 getSandboxDirs :: String -> IO [String]
 getSandboxDirs name = do
-  location <- lazyDirSandboxes >>= \a -> return $ (</>name) a
+  location <- lazyDirSandboxes >>= (return . (</>name))
   return location >>= \a -> return $ map (a </>) ["ghc","cabal"]
 
 checkDir :: IO FilePath -> IO CurrentDir
