@@ -1,3 +1,7 @@
+IMPORTANT: If you're looking for a sandboxing tool that makes it easier to install packages without dependency hell, Then you are probably looking for cabal-dev.
+This tool was made for personal gain because I wanted a quick way to swap sandboxes globally. The code is very old despite the upload date and I haven't bothered refactoring it.
+It's only been used on GNU/Linux operating systems.
+
 # LazyVault
 
 LazyVault is a simple sandboxing tool for managing your cabal packages.
